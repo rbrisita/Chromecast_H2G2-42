@@ -3,9 +3,19 @@
 # chromecast_setup.sh
 # Automates WiFi configuration of a factory-reset Chromecast H2G2-42.
 #
+# Authorship:
+#   Original research scripts (connect_wifi.sh, commit_wifi.sh,
+#   encrypt_password.sh, create_pem.sh, create_key_rsa.sh, get_info.sh,
+#   verify_wifi.sh) written by @rbrisita (https://github.com/rbrisita).
+#   This all-in-one script inlines and extends that original work.
+#   Developed with AI assistance (Claude, by Anthropic).
+#
+# Tested on:
+#   Debian 11 / Chromecast H2G2-42
+#
 # Hard requires : openssl, curl
 # Soft requires : arp-scan (IP discovery fallback; usually needs sudo)
-# WiFi tool     : nmcli (preferred) → iwctl → wpa_cli → wpa_supplicant+sudo
+# WiFi tool     : nmcli (preferred) -> iwctl -> wpa_cli -> wpa_supplicant+sudo
 # =============================================================================
 
 set -euo pipefail
@@ -244,6 +254,8 @@ wifi_connect() {
 
 # =============================================================================
 # SECTION 6: Fetch Chromecast Device Info
+# Inlines get_info.sh — fetches /setup/eureka_info from the device.
+# Extends it with mDNS, static IP, and arp-scan fallbacks.
 # =============================================================================
 
 fetch_eureka_info() {
@@ -370,6 +382,8 @@ chromecast_configure_wifi() {
 
 # =============================================================================
 # SECTION 9: Verify Chromecast on Home Network
+# Inlines verify_wifi.sh — probes /setup/configured_networks on the device.
+# Extends it with mDNS and arp-scan fallbacks for IP discovery.
 # =============================================================================
 
 verify_on_home_network() {
